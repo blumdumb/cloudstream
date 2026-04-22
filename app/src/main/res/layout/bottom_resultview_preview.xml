@@ -22,14 +22,14 @@
             android:padding="12dp">
 
             <androidx.cardview.widget.CardView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="88dp"
+                android:layout_height="132dp"
                 app:cardCornerRadius="@dimen/rounded_image_radius">
 
                 <ImageView
                     android:id="@+id/resultview_preview_poster"
-                    android:layout_width="88dp"
-                    android:layout_height="132dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
                     android:contentDescription="@string/poster_image"
                     android:scaleType="centerCrop"
                     tools:src="@drawable/example_poster" />

@@ -11,14 +11,15 @@
     android:foreground="@drawable/outline_drawable"
     android:orientation="vertical">
 
-    <androidx.cardview.widget.CardView
-        android:id="@+id/background_card"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="2.5dp"
-        android:elevation="10dp"
-        app:cardBackgroundColor="?attr/primaryGrayBackground"
-        app:cardCornerRadius="@dimen/rounded_image_radius">
+        <androidx.cardview.widget.CardView
+            android:id="@+id/background_card"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:layout_constraintDimensionRatio="2:3"
+            android:layout_margin="2.5dp"
+            android:elevation="10dp"
+            app:cardBackgroundColor="?attr/primaryGrayBackground"
+            app:cardCornerRadius="@dimen/rounded_image_radius">
 
         <ImageView
             android:id="@+id/imageView"
