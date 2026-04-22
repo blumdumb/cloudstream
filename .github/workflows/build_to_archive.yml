@@ -23,7 +23,8 @@ jobs:
     - name: Decode Keystore
       id: decode_keystore
       run: |
-        echo "${{ secrets.KEYSTORE_BASE64 }}" | base64 --decode > prerelease_keystore.keystore
+        mkdir -p /home/runner/work/_temp/keystore/
+        echo "${{ secrets.KEYSTORE_BASE64 }}" | base64 --decode > /home/runner/work/_temp/keystore/prerelease_keystore.keystore
         echo "key_pwd=${{ secrets.KEYSTORE_PASSWORD }}" >> $GITHUB_OUTPUT
         echo "::add-mask::${{ secrets.KEYSTORE_PASSWORD }}"
 
