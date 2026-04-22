@@ -110,3 +110,4 @@ Even if you can't contribute to the code or documentation, we always look for th
   <img src="https://hosted.weblate.org/widgets/cloudstream/-/app/multi-auto.svg" alt="Translation status" />
 </a>
 Build Trigger Wed Apr 22 03:31:40 CET 2026
+Force build Wed Apr 22 03:52:54 CET 2026
