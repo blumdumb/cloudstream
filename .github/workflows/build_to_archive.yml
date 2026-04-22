@@ -38,11 +38,18 @@ jobs:
     - name: Grant execute permission for gradlew
       run: chmod +x gradlew
 
+    - name: Configure Signing Properties
+      run: |
+        echo "signing.store.file=prerelease_keystore.keystore" >> gradle.properties
+        echo "signing.store.password=${{ secrets.KEYSTORE_PASSWORD }}" >> gradle.properties
+        echo "signing.key.alias=${{ secrets.KEY_ALIAS }}" >> gradle.properties
+        echo "signing.key.password=${{ secrets.KEYSTORE_PASSWORD }}" >> gradle.properties
+
     - name: Setup Gradle
       uses: gradle/actions/setup-gradle@v5
 
     - name: Run Gradle
-      run: ./gradlew assemblePrereleaseRelease -Pandroid.injected.signing.store.file=prerelease_keystore.keystore
+      run: ./gradlew assemblePrereleaseRelease
       env:
         SIGNING_KEY_ALIAS: "${{ secrets.KEY_ALIAS }}"
         SIGNING_KEY_PASSWORD: ${{ steps.decode_keystore.outputs.key_pwd }}
