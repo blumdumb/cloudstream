@@ -42,7 +42,7 @@ jobs:
       uses: gradle/actions/setup-gradle@v5
 
     - name: Run Gradle
-      run: ./gradlew assemblePrereleaseRelease
+      run: ./gradlew assemblePrereleaseRelease -Pandroid.injected.signing.store.file=prerelease_keystore.keystore
       env:
         SIGNING_KEY_ALIAS: "${{ secrets.KEY_ALIAS }}"
         SIGNING_KEY_PASSWORD: ${{ steps.decode_keystore.outputs.key_pwd }}
