@@ -10,7 +10,7 @@
 
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:layout_margin="3dp"
+    android:layout_margin="2.5dp"
     android:backgroundTint="@color/transparent"
     android:foreground="@drawable/outline_drawable"
     app:cardCornerRadius="@dimen/rounded_image_radius"
