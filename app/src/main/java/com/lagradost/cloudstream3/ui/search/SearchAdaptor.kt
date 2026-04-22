@@ -48,7 +48,7 @@ class SearchAdapter(
 
     var hasNext: Boolean = false
 
-    private val coverRatio = if(isHorizontal) 1.8 else 0.68
+    private val coverRatio = if(isHorizontal) 1.5 else 2.0 / 3.0
 
     private val coverHeight: Int get() = (resView.itemWidth / coverRatio).roundToInt()
 
