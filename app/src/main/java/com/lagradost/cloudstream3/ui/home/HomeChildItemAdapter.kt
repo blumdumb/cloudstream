@@ -173,7 +173,7 @@ open class HomeChildItemAdapter(
             // Scale by +10% per step
             val mul = 1.0f + scale * 0.1f
             minPosterSize = (114.toPx.toFloat() * mul).toInt()
-            maxPosterSize = (180.toPx.toFloat() * mul).toInt()
+            maxPosterSize = (minPosterSize * 1.5f).toInt()
         }
 
         fun updateLayoutParms(layout: FrameLayout, width: Int, height: Int) {
