@@ -6,10 +6,11 @@
         android:layout_height="wrap_content"
         android:background="?attr/primaryBlackBackground">
 
-    <ImageView
+    <com.lagradost.cloudstream3.widget.AspectRatioImageView
             android:id="@+id/imgPoster"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            app:ratio="1.5"
             android:scaleType="centerCrop"
             android:adjustViewBounds="true"
             android:src="@drawable/default_cover"
