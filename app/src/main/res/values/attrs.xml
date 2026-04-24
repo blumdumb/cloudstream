@@ -76,8 +76,4 @@
         <attr name="cropYCenterOffsetPct" format="float" />
         <attr name="cropXCenterOffsetPct" format="float" />
     </declare-styleable>
-
-    <declare-styleable name="AspectRatioImageView">
-        <attr name="ratio" format="float" />
-    </declare-styleable>
 </resources>

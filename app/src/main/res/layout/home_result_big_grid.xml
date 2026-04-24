@@ -15,10 +15,9 @@
         android:id="@+id/background_card"
         app:cardBackgroundColor="?attr/primaryGrayBackground">
 
-    <com.lagradost.cloudstream3.widget.AspectRatioImageView
+    <ImageView
             android:duplicateParentState="true"
             android:id="@+id/imageView"
-            app:ratio="1.5"
             tools:src="@drawable/example_poster"
             android:scaleType="centerCrop"
             android:layout_width="match_parent"

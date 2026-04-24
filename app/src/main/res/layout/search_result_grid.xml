@@ -20,12 +20,11 @@
             app:cardBackgroundColor="?attr/primaryGrayBackground"
             app:cardCornerRadius="@dimen/rounded_image_radius">
 
-        <com.lagradost.cloudstream3.widget.AspectRatioImageView
+        <ImageView
             android:id="@+id/imageView"
 
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            app:ratio="1.5"
             android:contentDescription="@string/search_poster_img_des"
             android:duplicateParentState="true"
             android:foreground="?android:attr/selectableItemBackgroundBorderless"
