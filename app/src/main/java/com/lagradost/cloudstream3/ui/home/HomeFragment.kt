@@ -677,6 +677,10 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(
             homeMasterRecycler.addOnScrollListener(object : RecyclerView.OnScrollListener() {
                 override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                     if (isLayout(PHONE)) {
+                        // Update dynamic header scroll
+                        var currentScrollY = recyclerView.computeVerticalScrollOffset()
+                        binding.dynamicHeader.updateScroll(currentScrollY)
+
                         // Fab is only relevant to Phone
                         if (dy > 0) { //check for scroll down
                             homeApiFab.shrink() // hide
