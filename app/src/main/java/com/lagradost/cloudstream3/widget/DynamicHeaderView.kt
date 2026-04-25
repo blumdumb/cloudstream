@@ -14,29 +14,26 @@ class DynamicHeaderView @JvmOverloads constructor(
 ) : View(context, attrs, defStyleAttr) {
 
     enum class State {
-        S0_GRADIENT,        // Soft fade, alpha 0.3
-        S1_TRANSITION_DOWN, // Rapid collapse (0 -> 105dp)
-        S2_HARD_CUT,        // Solid block, alpha 0.8
-        S3_TRANSITION_UP    // Recovery (30dp -> 0)
+        S0_GRADIENT,        // y = 0
+        S1_TRANSITION,      // 0 < y < 115
+        S2_HARD_CUT         // y >= 115
     }
 
     private var currentState = State.S0_GRADIENT
-    private var lastY = 0
     private var currentY = 0
 
-    private val dDown = (105 * resources.displayMetrics.density).toInt()
-    private val dUpStart = (30 * resources.displayMetrics.density).toInt()
+    private val dThreshold = (115 * resources.displayMetrics.density).toInt()
     private val s0Height = (150 * resources.displayMetrics.density).toInt()
-    private val s2Height = (80 * resources.displayMetrics.density).toInt()
+    private val s2Height = (110 * resources.displayMetrics.density).toInt()
 
     private val paint = Paint(Paint.ANTI_ALIAS_FLAG)
     private var headerHeight = s0Height
-    private var headerAlpha = 0.3f
+    private var headerAlpha = 0.7f
+    private var gradientStop = 0.2f
 
     private var gradient: LinearGradient? = null
 
     init {
-        // Initial gradient setup
         updateGradient()
     }
 
@@ -45,36 +42,25 @@ class DynamicHeaderView @JvmOverloads constructor(
             ContextCompat.getColor(context, R.color.primaryBlackBackground),
             Color.TRANSPARENT
         )
+        val positions = floatArrayOf(0f, gradientStop)
+        
         gradient = LinearGradient(
             0f, 0f, 0f, s0Height.toFloat(),
-            colors, null, Shader.TileMode.CLAMP
+            colors, positions, Shader.TileMode.CLAMP
         )
     }
 
     fun updateScroll(y: Int) {
-        val dir = if (y > lastY) "DOWN" else "UP"
         currentY = y
 
-        val nextState = when (currentState) {
-            State.S0_GRADIENT -> {
-                if (dir == "DOWN" && y > 0) State.S1_TRANSITION_DOWN else State.S0_GRADIENT
-            }
-            State.S1_TRANSITION_DOWN -> {
-                if (y >= dDown) State.S2_HARD_CUT else State.S1_TRANSITION_DOWN
-            }
-            State.S2_HARD_CUT -> {
-                if (dir == "UP" && y <= dUpStart) State.S3_TRANSITION_UP else State.S2_HARD_CUT
-            }
-            State.S3_TRANSITION_UP -> {
-                if (y <= 0) State.S0_GRADIENT 
-                else if (dir == "DOWN" && y > dUpStart) State.S2_HARD_CUT 
-                else State.S3_TRANSITION_UP
-            }
+        val nextState = when {
+            y <= 0 -> State.S0_GRADIENT
+            y < dThreshold -> State.S1_TRANSITION
+            else -> State.S2_HARD_CUT
         }
 
         currentState = nextState
         updateVisuals()
-        lastY = y
         invalidate()
     }
 
@@ -82,43 +68,31 @@ class DynamicHeaderView @JvmOverloads constructor(
         when (currentState) {
             State.S0_GRADIENT -> {
                 headerHeight = s0Height
-                headerAlpha = 0.3f
+                gradientStop = 0.2f
             }
-            State.S1_TRANSITION_DOWN -> {
-                val progress = currentY.toFloat() / dDown.toFloat().coerceAtLeast(1f)
-                headerHeight = (s0Height + (s2Height - s0Height) * progress).toInt()
-                headerAlpha = 0.3f + (0.5f * progress)
+            State.S1_TRANSITION -> {
+                val progress = currentY.toFloat() / dThreshold.toFloat().coerceAtLeast(1f)
+                headerHeight = (s0Height - (s0Height - s2Height) * progress).toInt()
+                gradientStop = 0.2f + (0.75f * progress)
             }
             State.S2_HARD_CUT -> {
                 headerHeight = s2Height
-                headerAlpha = 0.8f
-            }
-            State.S3_TRANSITION_UP -> {
-                val progress = currentY.toFloat() / dUpStart.toFloat().coerceAtLeast(1f)
-                headerHeight = (s2Height + (s0Height - s2Height) * (1f - progress)).toInt()
-                headerAlpha = 0.8f - (0.5f * (1f - progress))
+                gradientStop = 0.95f
             }
         }
+        updateGradient()
     }
 
     override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
 
         paint.alpha = (headerAlpha * 255).toInt()
-        
-        if (currentState == State.S2_HARD_CUT) {
-            paint.shader = null
-            paint.color = ContextCompat.getColor(context, R.color.primaryBlackBackground)
-            canvas.drawRect(0f, 0f, width.toFloat(), headerHeight.toFloat(), paint)
-        } else {
-            paint.shader = gradient
-            canvas.drawRect(0f, 0f, width.toFloat(), headerHeight.toFloat(), paint)
-        }
+        paint.shader = gradient
+        canvas.drawRect(0f, 0f, width.toFloat(), headerHeight.toFloat(), paint)
     }
 
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
         val width = MeasureSpec.getSize(widthMeasureSpec)
-        // We set the measure height to the maximum possible height (S0)
         setMeasuredDimension(width, s0Height)
     }
 }
